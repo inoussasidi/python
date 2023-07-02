@@ -1,0 +1,57 @@
+/weather_script/
+|-- README.md
+|-- requirements.txt
+|-- main.py
+
+Here is what the files do:
+
+README.md: This file contains details about the project, how to run it, etc.
+requirements.txt: This file lists the Python packages your project depends on.
+main.py: This is the main Python script that runs your project.
+And here's the content for each file:
+
+README.md:
+# WeatherScript
+A simple Python script that gets the current weather data for a specified city using the OpenWeatherMap API.
+
+## How to Run
+1. Clone this repository.
+2. Install the necessary Python packages using pip: `pip install -r requirements.txt`
+3. Run the script using python: `python main.py`
+
+You can change the city in the main.py file to get the weather of a different city.
+
+requirements.txt:
+requests
+
+main.py:
+import requests
+import os
+
+def get_weather(city, api_key):
+    base_url = "http://api.openweathermap.org/data/2.5/weather"
+    params = {
+        "q": city,
+        "appid": api_key,
+        "units": "metric"
+    }
+    response = requests.get(base_url, params=params)
+    data = response.json()
+
+    main_weather = data['weather'][0]['main']
+    description = data['weather'][0]['description']
+    temp = data['main']['temp']
+    humidity = data['main']['humidity']
+
+    print(f"Weather in {city}: {main_weather} ({description}). Temp: {temp}°C. Humidity: {humidity}%.")
+
+if __name__ == "__main__":
+    city = "London"  # Change this to the city you want.
+    api_key = os.getenv("OPEN_WEATHER_MAP_API_KEY")  # Put your OpenWeatherMap API key here.
+    if not api_key:
+        print("Error: No OpenWeatherMap API key provided. Set the OPEN_WEATHER_MAP_API_KEY environment variable to your API key.")
+    else:
+        get_weather(city, api_key)
+
+
+
